@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <table class="table table-hover">
+              <caption>
+                  <button type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#RouteWindowModal"
+                                    onclick="myFunction('{% url 'create_route'%}')">
+                                    Add Route
+                  </button>
+              </caption>
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="w-75">Name</th>
+                    <th scope="col" ></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for route in routes %}
+                    <tr scope="row">
+                        <td>{{route.name}}</td>
+                         <td><div class="text-right">
+                            <button type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#RouteWindowModal"
+                                    onclick="myFunction('{% url 'edit_route' route.pk %}')">
+                                    Edit
+                            </button>
+                             <button type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#RouteWindowModal"
+                                    onclick="myFunction('{% url 'route_delete' route.pk %}')">
+                                    Delete
+                            </button>
+                                 </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+    {% if is_paginated %}
+        {% include "Management/_pagination.html" %}
+    {% endif %}
+    <!-- Modal -->
+    <div class="modal fade" id="RouteWindowModal"
+         tabindex="-1" aria-labelledby="RouteWindowModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+
+         </div>
+  </div>
+    </div>
+    {% block js %}
+            <script>
+    function myFunction(url) {
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    $("#RouteWindowModal").html(data);
+                }
+            });
+        }
+
+    </script>
+
+    {% endblock js %}
+
+{% endblock %}

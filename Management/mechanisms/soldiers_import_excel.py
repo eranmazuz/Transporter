@@ -3,6 +3,7 @@ Module for the mechanism of importing the soldiers from excel File.
 """
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 
 from .soldiers_import import SoldiersImport
 import pandas as pd
@@ -43,8 +44,8 @@ class SoldiersImportExcel(SoldiersImport):
             grouped_duplicate = data[duplicates].groupby(self.SOLDIER_ID_COLUMN_NAME, as_index=False).size()
             message = "The following duplicate IDs found:"
             for id, duplicate_count in grouped_duplicate.values:
-                message = message + '<br/>- %s : %s times.' % (id, duplicate_count)
-            raise ValidationError(mark_safe(message))
+                message = message + '\n- %s : %s times.' % (id, duplicate_count)
+            raise ValidationError(_(message))
 
     def post_operations(self, data):
         """

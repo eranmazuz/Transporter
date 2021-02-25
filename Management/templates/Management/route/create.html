@@ -1,0 +1,132 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="RouteWindowModalLabel">Create</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="myform">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group row ">
+                    <label>{{ routeform.name.label }}</label>
+                    {{ routeform.name }}
+
+                </div>
+
+                {{ formset.management_form }}
+                <label>Stations:</label>
+                {% for form in formset %}
+                    <div class="form-group form-rowset row">
+                        <div class="input-group">
+                            {{ form.name }}
+
+                            <div class="input-group-append">
+                                <button class="btn btn-danger remove-form-row">-</button>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <button class="btn btn-success btn-block add-form-row" onclick="">+</button>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+
+    function cloneMore(selector, prefix) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+            var name = $(this).attr('name')
+            if (name) {
+                name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+            }
+        });
+        newElement.find('label').each(function () {
+            var forValue = $(this).attr('for');
+            if (forValue) {
+                forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                $(this).attr({'for': forValue});
+            }
+        });
+        total++;
+        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+        var conditionRow = $('.form-row:not(:last)');
+        conditionRow.find('.btn.add-form-row')
+            .removeClass('btn-success').addClass('btn-danger')
+            .removeClass('add-form-row').addClass('remove-form-row')
+            .html('-');
+        return false;
+    }
+
+    function deleteForm(prefix, btn) {
+        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (total > 1) {
+            btn.closest('.form-rowset').remove();
+            var forms = $('.form-rowset');
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).find(':input').each(function () {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+        }
+        return false;
+    }
+
+    $(document).on('click', '.add-form-row', function (e) {
+        e.preventDefault();
+        cloneMore('.form-rowset:last', 'form');
+        return false;
+    });
+    $(document).on('click', '.remove-form-row', function (e) {
+        e.preventDefault();
+        deleteForm('form', $(this));
+        return false;
+    });
+    $('#myform').submit(function (e) {
+        e.preventDefault();
+        var form_data = $(this).serialize()
+
+        $.ajax({
+            {% if routeform.instance.pk %}
+                url: "{% url 'edit_route' routeform.instance.pk %}",
+            {% else %}
+                url: "{% url 'create_route'%}",
+
+            {% endif %}
+            type: "POST",
+            data: form_data,
+            success: function (data) {
+                location.reload();
+            },
+            error: function (data) {
+                $("#RouteWindowModal").html(data.responseText);
+            }
+        });
+
+    });
+
+</script>
+
