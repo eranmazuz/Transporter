@@ -4,118 +4,83 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
-            <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    {% block css %}
+    {% endblock css %}
 
-        {% block css %}
-        {% endblock css %}
+    <title>{% block title %}{% translate 'Trasnporter' %}{% endblock title %}</title>
+</head>
+<body>
 
-        <title>{% block title %}{% translate 'Trasnporter' %}{% endblock title %}</title>
-    </head>
-    <body>
-{#        <div class="navigation_bar" id="top_navigation_bar">#}
-{#            <a class="active" href="{% url 'home' %}"><i class="fa fa-home"></i></a>#}
-{#            <div class="dropdown">#}
-{#                <button class="dropbtn">{% translate 'Settings' %} <i class="fa fa-caret-down"></i>#}
-{#                </button>#}
-{#                <div class="dropdown-content">#}
-{#                    <a href="#">{% translate 'Cities' %}</a>#}
-{#                    <a href="#">{% translate 'Assosiate station to City' %}</a>#}
-{#                    <a href="#">{% translate 'Transporters size' %}</a>#}
-{#                </div>#}
-{#            </div>#}
-{#             <div class="dropdown">#}
-{#                <button class="dropbtn">{% translate 'Managment' %} <i class="fa fa-caret-down"></i>#}
-{#                </button>#}
-{#                <div class="dropdown-content">#}
-{#                    <a href="#">{% translate 'Create new transportnation report' %}</a>#}
-{#                    <a href="#">{% translate 'Load transportation report' %}</a>#}
-{#                </div>#}
-{#             </div>#}
-{#            <a href="#">{% translate 'Manage Transportation' %}</a>#}
-{#             <div class="dropdown">#}
-{#                <button class="dropbtn">{% translate 'Reports' %} <i class="fa fa-caret-down"></i>#}
-{#                </button>#}
-{#                <div class="dropdown-content">#}
-{#                    <a href="#">{% translate 'Soldiers per branch' %}</a>#}
-{#                    <a href="#">{% translate 'Soldiers Transportation assigment report' %}</a>#}
-{#                    <a href="#">{% translate 'Soldiers Transportation assigment notice' %}</a>#}
-{#                </div>#}
-{#             </div>#}
-{##}
-{##}
-{#            <a href="javascript:void(0);" class="icon" onclick="myFunction()">#}
-{#                <i class="fa fa-bars"></i>#}
-{#            </a>#}
-{#        </div>#}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse"
-          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="#"><i class="fa fa-home"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown">
-            <a  class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% translate 'Settings' %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'route_list' %}">{% translate 'Routes' %}</a>
-                <a class="dropdown-item" href="#">{% translate 'Assosiate station to City' %}</a>
-                <a class="dropdown-item" href="#">{% translate 'Transporters size' %}</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% translate 'Settings' %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'route_list' %}">{% translate 'Routes' %}</a>
+                    <a class="dropdown-item" href="#">{% translate 'Assosiate station to City' %}</a>
+                    <a class="dropdown-item" href="#">{% translate 'Transporters size' %}</a>
 
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a  class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% translate 'Managment' %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">{% translate 'Create new transportnation report' %}</a>
-                <a class="dropdown-item" href="#">{% translate 'Load transportation report' %}</a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">{% translate 'Manage Transportation' %}</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a  class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% translate 'Reports' %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">{% translate 'Soldiers per branch' %}</a>
-                <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment report' %}</a>
-                <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment notice' %}</a>
-            </div>
-        </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% translate 'Managment' %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">{% translate 'Create new transportnation report' %}</a>
+                    <a class="dropdown-item" href="#">{% translate 'Load transportation report' %}</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">{% translate 'Manage Transportation' %}</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% translate 'Reports' %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">{% translate 'Soldiers per branch' %}</a>
+                    <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment report' %}</a>
+                    <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment notice' %}</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
 </nav>
 
 
-        <div class="container mt-4">
-            {% block content %}
-            {% endblock %}
-        </div>
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
 
-        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
-        <script src="{% static "js/popper.min.js" %}"></script>
-        <script src="{% static "js/bootstrap.min.js" %}"></script>
-        {% block js %}
-        {% endblock js %}
-    </body>
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+{% block js %}
+{% endblock js %}
+</body>
 </html>

@@ -4186,7 +4186,7 @@ cloud-upload-alt:
   search:
     terms:
       - cloud-upload
-      - import
+      - upload
       - save
       - upload
   styles:
@@ -4385,7 +4385,7 @@ columns:
     terms:
       - browser
       - dashboard
-      - organize
+      - organization
       - panes
       - split
   styles:
@@ -7340,7 +7340,7 @@ file-upload:
   search:
     terms:
       - document
-      - import
+      - upload
       - page
       - save
   styles:
@@ -20030,7 +20030,7 @@ upload:
   search:
     terms:
       - hard drive
-      - import
+      - upload
       - publish
   styles:
     - solid

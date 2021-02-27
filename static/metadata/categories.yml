@@ -1249,7 +1249,7 @@ interfaces:
     - file-alt
     - file-download
     - file-export
-    - file-import
+    - file-upload
     - file-upload
     - filter
     - fingerprint

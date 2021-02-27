@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
 
 from Management import error
-from Management.mechanisms import IMPORTS
+from Management.mechanisms.upload import IMPORTS
 
 
 class UploadForm(forms.Form):

@@ -1,14 +1,16 @@
+
 from django.urls import path
 
-from . import views
+from Management import views
 
 urlpatterns = [
     #path('', views.upload, name='index'),
+    path('settings/', views.settings_view, name='settings'),
+    path('upload/', views.upload_view, name='upload'),
+    path('transporters/', views.set_station_transporters_view, name='set_station_transporters'),
+    path('transporters/stations', views.set_station_transporters_view, name='set_station_transporters'),
     path('routes/', views.RouteListView.as_view(), name='route_list'),
-    path('routes/<int:pk>/update', views.edit_route_view, name='edit_route'),
-    path('routes/<int:pk>/delete', views.RouteDeleteView.as_view(), name='route_delete'),
-    path('routes/create/', views.create_route_view, name='create_route'),
-    path('a3/', views.create_route_with_stations, name='a3'),
-    path('a3/<int:pk>/', views.create_route_with_stations, name='a333'),
+    path('routes/create/', views.RouteCreateView.as_view(), name='route_create'),
+    path('routes/<int:pk>/', views.RouteUpdateView.as_view(), name='route_update'),
 
 ]

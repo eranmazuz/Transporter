@@ -1011,11 +1011,11 @@ function createDisabledPseudo( disabled ) {
 	// not IE: fieldset[disabled] > legend:nth-of-type(n+2) :can-disable
 	return function( elem ) {
 
-		// Check form elements and option elements for explicit disabling
+		// Check forms elements and option elements for explicit disabling
 		return "label" in elem && elem.disabled === disabled ||
 			"form" in elem && elem.disabled === disabled ||
 
-			// Check non-disabled form elements for fieldset[disabled] ancestors
+			// Check non-disabled forms elements for fieldset[disabled] ancestors
 			"form" in elem && elem.disabled === false && (
 				// Support: IE6-11+
 				// Ancestry is covered for us
@@ -7050,7 +7050,7 @@ jQuery.extend( {
 					option = options[ i ];
 
 					// Support: IE <=9 only
-					// IE8-9 doesn't update selected after form reset (#2551)
+					// IE8-9 doesn't update selected after forms reset (#2551)
 					if ( ( option.selected || i === index ) &&
 
 							// Don't return options that are disabled or in a disabled optgroup
@@ -7405,7 +7405,7 @@ function buildParams( prefix, obj, traditional, add ) {
 	}
 }
 
-// Serialize an array of form elements or a set of
+// Serialize an array of forms elements or a set of
 // key/values into a query string
 jQuery.param = function( a, traditional ) {
 	var prefix,
@@ -7421,10 +7421,10 @@ jQuery.param = function( a, traditional ) {
 				encodeURIComponent( value == null ? "" : value );
 		};
 
-	// If an array was passed in, assume that it is an array of form elements.
+	// If an array was passed in, assume that it is an array of forms elements.
 	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
 
-		// Serialize the form elements
+		// Serialize the forms elements
 		jQuery.each( a, function() {
 			add( this.name, this.value );
 		} );
@@ -7449,7 +7449,7 @@ jQuery.fn.extend( {
 	serializeArray: function() {
 		return this.map( function() {
 
-			// Can add propHook for "elements" to filter or add form elements
+			// Can add propHook for "elements" to filter or add forms elements
 			var elements = jQuery.prop( this, "elements" );
 			return elements ? jQuery.makeArray( elements ) : this;
 		} )
@@ -7560,7 +7560,7 @@ jQuery.expr.pseudos.visible = function( elem ) {
 // https://bugs.webkit.org/show_bug.cgi?id=137337
 support.createHTMLDocument = ( function() {
 	var body = document.implementation.createHTMLDocument( "" ).body;
-	body.innerHTML = "<form></form><form></form>";
+	body.innerHTML = "<forms></forms><forms></forms>";
 	return body.childNodes.length === 2;
 } )();
 

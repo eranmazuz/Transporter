@@ -1,132 +1,74 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="RouteWindowModalLabel">Create</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Create Route</h5>
         </div>
-        <form method="post" id="myform">
-            {% csrf_token %}
-            <div class="modal-body">
-                <div class="form-group row ">
-                    <label>{{ routeform.name.label }}</label>
-                    {{ routeform.name }}
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ route_form.as_p }}
+
+                {{ station_formset.management_form }}
+
+                <div class="col-2">
+                    <label>Stations:</label>
 
                 </div>
-
-                {{ formset.management_form }}
-                <label>Stations:</label>
-                {% for form in formset %}
-                    <div class="form-group form-rowset row">
+                {% for form in station_formset %}
+                    <div class="col-4 form-group spacer station-row">
                         <div class="input-group">
                             {{ form.name }}
-
                             <div class="input-group-append">
-                                <button class="btn btn-danger remove-form-row">-</button>
+                                <button class="btn btn-danger delete-button">-</button>
+                                <input type="checkbox" style="display:none"  id="id_{{ form.prefix }}-{{ form.DELETE.name }}" name="{{ form.prefix }}-{{ form.DELETE.name }}">
                             </div>
                         </div>
-
                     </div>
                 {% endfor %}
-                <div class="form-group">
-                    <button class="btn btn-success btn-block add-form-row" onclick="">+</button>
+                <div class="form-group spacer col-3">
+                    <button type="button" class="btn btn-block btn-primary add-button">Add</button>
                 </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Save changes</button>
-            </div>
-        </form>
+                <button type="submit" class="btn btn-success" value="submit">Save</button>
+                <button type="submit" class="btn btn-primary" onclick="location.href = '{% url 'route_list' %}';">
+                    Cancel
+                </button>
+            </form>
+        </div>
     </div>
-</div>
+{% endblock %}
 
-<script type="text/javascript">
-    function updateElementIndex(el, prefix, ndx) {
-        var id_regex = new RegExp('(' + prefix + '-\\d+)');
-        var replacement = prefix + '-' + ndx;
-        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
-        if (el.id) el.id = el.id.replace(id_regex, replacement);
-        if (el.name) el.name = el.name.replace(id_regex, replacement);
-    }
+{% block js %}
 
-    function cloneMore(selector, prefix) {
-        var newElement = $(selector).clone(true);
-        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
-        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
-            var name = $(this).attr('name')
-            if (name) {
-                name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+    <script>
+        $('.add-button').on('click', function (e) {
+            e.preventDefault()
+            var newRow = $('.station-row:last').clone(true);
+            newRow.css("display", "");
+            var rowCount = $('#id_stations-TOTAL_FORMS').val();
+            newRow.find("input:text").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
                 var id = 'id_' + name;
-                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-            }
+                $(this).attr({'name': name, 'id': id}).val('')
+            });
+            newRow.find("input:checkbox").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).prop('checked', false);
+            });
+            rowCount++;
+            $('#id_stations-TOTAL_FORMS').val(rowCount);
+            $('.station-row:last').after(newRow);
+
+            return false;
         });
-        newElement.find('label').each(function () {
-            var forValue = $(this).attr('for');
-            if (forValue) {
-                forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
-                $(this).attr({'for': forValue});
-            }
-        });
-        total++;
-        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
-        $(selector).after(newElement);
-        var conditionRow = $('.form-row:not(:last)');
-        conditionRow.find('.btn.add-form-row')
-            .removeClass('btn-success').addClass('btn-danger')
-            .removeClass('add-form-row').addClass('remove-form-row')
-            .html('-');
-        return false;
-    }
-
-    function deleteForm(prefix, btn) {
-        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-        if (total > 1) {
-            btn.closest('.form-rowset').remove();
-            var forms = $('.form-rowset');
-            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
-            for (var i = 0, formCount = forms.length; i < formCount; i++) {
-                $(forms.get(i)).find(':input').each(function () {
-                    updateElementIndex(this, prefix, i);
-                });
-            }
-        }
-        return false;
-    }
-
-    $(document).on('click', '.add-form-row', function (e) {
-        e.preventDefault();
-        cloneMore('.form-rowset:last', 'form');
-        return false;
-    });
-    $(document).on('click', '.remove-form-row', function (e) {
-        e.preventDefault();
-        deleteForm('form', $(this));
-        return false;
-    });
-    $('#myform').submit(function (e) {
-        e.preventDefault();
-        var form_data = $(this).serialize()
-
-        $.ajax({
-            {% if routeform.instance.pk %}
-                url: "{% url 'edit_route' routeform.instance.pk %}",
-            {% else %}
-                url: "{% url 'create_route'%}",
-
-            {% endif %}
-            type: "POST",
-            data: form_data,
-            success: function (data) {
-                location.reload();
-            },
-            error: function (data) {
-                $("#RouteWindowModal").html(data.responseText);
-            }
+        $('.delete-button').on('click', function (e) {
+           e.preventDefault();
+           $(this).parents('.station-row').css("display", "none");
+           $(this).parent('.input-group-append').find(':checkbox').prop('checked', true);;
+           return false;
         });
 
-    });
-
-</script>
-
+    </script>
+{% endblock js %}

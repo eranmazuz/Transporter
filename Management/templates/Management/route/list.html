@@ -5,7 +5,7 @@
               <caption>
                   <button type="button" class="btn btn-primary"
                                     data-toggle="modal" data-target="#RouteWindowModal"
-                                    onclick="myFunction('{% url 'create_route'%}')">
+                                    onclick="location.href ='{% url 'route_create' %}';">
                                     Add Route
                   </button>
               </caption>
@@ -23,12 +23,11 @@
                          <td><div class="text-right">
                             <button type="button" class="btn btn-primary"
                                     data-toggle="modal" data-target="#RouteWindowModal"
-                                    onclick="myFunction('{% url 'edit_route' route.pk %}')">
+                                    onclick="location.href ='{% url 'route_update' route.pk %}';">
                                     Edit
                             </button>
                              <button type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#RouteWindowModal"
-                                    onclick="myFunction('{% url 'route_delete' route.pk %}')">
+                                    data-toggle="modal" data-target="#RouteWindowModal">
                                     Delete
                             </button>
                                  </div>
@@ -40,28 +39,5 @@
     {% if is_paginated %}
         {% include "Management/_pagination.html" %}
     {% endif %}
-    <!-- Modal -->
-    <div class="modal fade" id="RouteWindowModal"
-         tabindex="-1" aria-labelledby="RouteWindowModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-
-         </div>
-  </div>
-    </div>
-    {% block js %}
-            <script>
-    function myFunction(url) {
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    $("#RouteWindowModal").html(data);
-                }
-            });
-        }
-
-    </script>
-
-    {% endblock js %}
 
 {% endblock %}
