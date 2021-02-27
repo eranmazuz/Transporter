@@ -1,10 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Cities</h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            <table class="table">
+                <caption>
+                    <button type="button" class="btn btn-primary add-button">
+                        Add City
+                    </button>
+                </caption>
+                {% for form in formset %}
+                    {% if forloop.first %}
+                        <thead>
+                        <tr>
+                            <th scope="col">{{ form.name.label }}</th>
+                            <th scope="col">{{ form.station.label }}</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tr scope="row">
+                        <td>
+                            {{ form.id }}
+                            {{ form.name }}
+                        </td>
+                        <td>
+                            {{ form.station }}
+                        </td>
+                        <td class="remove-city">
+                            <button class="btn btn-danger delete-button">-</button>
+                            <input type="checkbox" style="display:none" id="id_{{ form.prefix }}-{{ form.DELETE.name }}"
+                                   name="{{ form.prefix }}-{{ form.DELETE.name }}">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <button type="submit" class="btn btn-success" value="submit">Save</button>
+            <button type="button" class="btn btn-primary" onclick="location.href = '{% url 'home' %}';">
+                Cancel
+            </button>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script>
+        $('.add-button').on('click', function (e) {
+            e.preventDefault()
+            var newRow = $('tr:last').clone(true);
+            newRow.css("display", "");
+            var rowCount = $('#id_form-TOTAL_FORMS').val();
+            newRow.find("input:text").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('')
+            });
+            newRow.find("input:hidden").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('')
+            });
+            newRow.find("input:checkbox").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).prop('checked', false);
+            });
+            newRow.find("select").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('')
+            });
+            rowCount++;
+            $('#id_form-TOTAL_FORMS').val(rowCount);
+            $('tr:last').after(newRow);
+
+            return false;
+        });
+        $('.delete-button').on('click', function (e) {
+            e.preventDefault();
+            $(this).parents('tr').css("display", "none");
+            $(this).parent('.remove-city').find(':checkbox').prop('checked', true);
+            return false;
+        });
+
+    </script>
+
+{% endblock js %}

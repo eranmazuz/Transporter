@@ -1,44 +1,58 @@
-<form method="post">
-    {%  csrf_token %}
-    {{ formset.media }}
-    {{ formset.management_form }}
-    {{ formset.non_form_errors.as_ul }}
-    <table>
-        {% for form in formset %}
-            {% if forloop.first %}
-                <thead>
-                    <tr>
-                        <th>{{ form.name.label}}</th>
-                        <th>{{ form.soldiers_count.label}}</th>
-                        <th>{{ form.big_transporter.label}}</th>
-                        <th>{{ form.medium_transporter.label}}</th>
-                        <th>{{ form.small_transporter.label}}</th>
-                        <th>{{ form.soldiers_reminder.label}}</th>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transporters</h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {{ formset.non_form_errors.as_ul }}
+            <table class="table">
+                </caption>
+                {% for form in formset %}
+                    {% if forloop.first %}
+                        <thead>
+                        <tr>
+                            <th scope="col">{{ form.name.label }}</th>
+                            <th scope="col">{{ form.soldiers_count.label }}</th>
+                            <th scope="col">{{ form.big_transporter.label }}</th>
+                            <th scope="col">{{ form.medium_transporter.label }}</th>
+                            <th scope="col">{{ form.small_transporter.label }}</th>
+                            <th scope="col">{{ form.soldiers_reminder.label }}</th>
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tr scope="row">
+                        <td>
+                            {{ form.id }}
+                            {{ form.name }}
+                        </td>
+                        <td>
+                            {{ form.soldiers_count }}
+                        </td>
+                        <td>
+                            {{ form.big_transporter }}
+                        </td>
+                        <td>
+                            {{ form.medium_transporter }}
+                        </td>
+                        <td>
+                            {{ form.small_transporter }}
+                        </td>
+                        <td>
+                            {{ form.soldiers_reminder }}
+                        </td>
                     </tr>
-                </thead>
-            {% endif %}
-            <tr class="{{ form.prefix }}">
-                <td>
-                    {{ form.id }}
-                    {{ form.name }}
-                </td>
-                <td>
-                    {{ form.soldiers_count }}
-                </td>
-                <td>
-                    {{ form.big_transporter }}
-                </td>
-                <td>
-                     {{ form.medium_transporter }}
-                </td>
-                <td>
-                    {{ form.small_transporter }}
-                </td>
-                <td>
-                    {{ form.soldiers_reminder }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    <input type="submit" value="Submit">
-</form>
+                {% endfor %}
+            </table>
+            <button type="submit" class="btn btn-success" value="submit">Save</button>
+            <button type="button" class="btn btn-primary" onclick="location.href = '{% url 'home' %}';">
+                Cancel
+            </button>
+        </form>
+    </div>
+{% endblock content %}

@@ -12,5 +12,8 @@ urlpatterns = [
     path('routes/', views.RouteListView.as_view(), name='route_list'),
     path('routes/create/', views.RouteCreateView.as_view(), name='route_create'),
     path('routes/<int:pk>/', views.RouteUpdateView.as_view(), name='route_update'),
+    path('routes/<int:pk>/delete/', views.RouteDeleteView.as_view(), name='route_delete'),
+
+    path('cities/', views.city_for_station_view, name='city_for_station')
 
 ]

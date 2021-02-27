@@ -4,7 +4,6 @@ from django.shortcuts import render
 from Management.models import Station, Transporter
 from Management.mechanisms.organization import ORGANIZATIONS
 from Management.forms import TransporterFormSet
-from django.forms import formset_factory
 
 
 def __create_transporters(transporter_data, platform, station_id):

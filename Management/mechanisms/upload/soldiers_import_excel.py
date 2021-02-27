@@ -17,7 +17,7 @@ SOLDIER_CITY_COLUMN_NAME = 'עיר'
 
 def __load_source(source):
     """
-    Load the soldiers information from the xlsx file.m
+    Load the soldiers information from the xlsx file.
     :param source: The xlsx file.
     :return: The soldiers information.
     """
@@ -32,21 +32,21 @@ def __validations(data):
     __validate_soldier_station(data)
 
 
-def __validate_ID_duplicates(self, data):
-    duplicates = data[self.SOLDIER_ID_COLUMN_NAME].duplicated(keep=False)
+def __validate_ID_duplicates(data):
+    duplicates = data[SOLDIER_ID_COLUMN_NAME].duplicated(keep=False)
 
     if duplicates.any():
-        grouped_duplicate = data[duplicates].groupby(self.SOLDIER_ID_COLUMN_NAME, as_index=False).size()
+        grouped_duplicate = data[duplicates].groupby(SOLDIER_ID_COLUMN_NAME, as_index=False).size()
         message = "The following duplicate IDs found:"
         for id, duplicate_count in grouped_duplicate.values:
             message = message + '\n- %s : %s times.' % (id, duplicate_count)
         raise ValidationError(_(message))
 
 
-def __validate_soldier_station(self, data: DataFrame):
+def __validate_soldier_station(data: DataFrame):
     cites = City.objects.values_list('name', flat=True).union(Station.objects.values_list('name', flat=True))
-    known_cites = data[self.SOLDIER_CITY_COLUMN_NAME].isin(cites)
-    unknown_cites = data[~known_cites][self.SOLDIER_CITY_COLUMN_NAME]
+    known_cites = data[SOLDIER_CITY_COLUMN_NAME].isin(cites)
+    unknown_cites = data[~known_cites][SOLDIER_CITY_COLUMN_NAME]
 
     if unknown_cites.any():
         message = "The following Cities are not registered:"
@@ -55,7 +55,7 @@ def __validate_soldier_station(self, data: DataFrame):
         raise ValidationError(_(message))
 
 
-def __post_operations(self, data):
+def __post_operations(data):
     """
     Do operations on the soldiers information after the validation.
     :param data: The soldiers information before the operations.

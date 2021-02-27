@@ -4,7 +4,6 @@
     <table class="table table-hover">
               <caption>
                   <button type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#RouteWindowModal"
                                     onclick="location.href ='{% url 'route_create' %}';">
                                     Add Route
                   </button>
@@ -22,12 +21,11 @@
                         <td>{{route.name}}</td>
                          <td><div class="text-right">
                             <button type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#RouteWindowModal"
                                     onclick="location.href ='{% url 'route_update' route.pk %}';">
                                     Edit
                             </button>
                              <button type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#RouteWindowModal">
+                                    onclick="location.href ='{% url 'route_delete' route.pk %}';">
                                     Delete
                             </button>
                                  </div>

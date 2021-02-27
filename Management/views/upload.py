@@ -1,9 +1,12 @@
 from django.db.models import Model
 from django.shortcuts import render
+from django.urls import reverse_lazy
+
 from Management.mechanisms.upload import IMPORTS
 from Management.forms import UploadForm, ValidationError
 from Management.models import Soldier, Station, City
 import os.path
+from django.shortcuts import redirect
 
 
 SOLDIER_ID = 'מספר אישי'
@@ -43,7 +46,7 @@ def upload_view(request):
                                    structure=soldier_data[SOLDIER_TAGS],
                                    city=city,
                                    station= __get_soldier_station(city))
-        return render(request, 'Management/upload/form.html', {'form': form})
+        return redirect(reverse_lazy('home'))
 
     except ValidationError as e:
         form.add_error('file', e.message)

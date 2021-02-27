@@ -34,8 +34,8 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'route_list' %}">{% translate 'Routes' %}</a>
-                    <a class="dropdown-item" href="#">{% translate 'Assosiate station to City' %}</a>
-                    <a class="dropdown-item" href="#">{% translate 'Transporters size' %}</a>
+                    <a class="dropdown-item" href="{% url 'city_for_station' %}">{% translate 'Assosiate station to City' %}</a>
+                    <a class="dropdown-item" href="{% url 'settings' %}">{% translate 'Transporters size' %}</a>
 
                 </div>
             </li>
@@ -45,12 +45,11 @@
                     {% translate 'Managment' %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">{% translate 'Create new transportnation report' %}</a>
-                    <a class="dropdown-item" href="#">{% translate 'Load transportation report' %}</a>
+                    <a class="dropdown-item" href="{% url 'upload' %}">{% translate 'Load soldier information' %}</a>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">{% translate 'Manage Transportation' %}</a>
+                <a class="nav-link" href="{% url 'set_station_transporters' %}">{% translate 'Manage Transportation' %}</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -58,16 +57,14 @@
                     {% translate 'Reports' %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">{% translate 'Soldiers per branch' %}</a>
                     <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment report' %}</a>
-                    <a class="dropdown-item" href="#">{% translate 'Soldiers Transportation assigment notice' %}</a>
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+{#        <form class="form-inline my-2 my-lg-0">#}
+{#            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
+{#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+{#        </form>#}
     </div>
 </nav>
 

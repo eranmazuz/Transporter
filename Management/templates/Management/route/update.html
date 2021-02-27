@@ -21,18 +21,21 @@
                         <div class="input-group">
                             {{ form.id }}
                             {{ form.name }}
+                            {{ form.name.errors }}
                             <div class="input-group-append">
                                 <button class="btn btn-danger delete-button">-</button>
                                 <input type="checkbox" style="display:none"  id="id_{{ form.prefix }}-{{ form.DELETE.name }}" name="{{ form.prefix }}-{{ form.DELETE.name }}">
                             </div>
                         </div>
+                        {{ form.non_field_errors }}
                     </div>
                 {% endfor %}
                 <div class="form-group spacer col-3">
                     <button type="button" class="btn btn-block btn-primary add-button">Add</button>
                 </div>
+                {{ station_formset.non_field_errors }}
                 <button type="submit" class="btn btn-success" value="submit">Save</button>
-                <button type="submit" class="btn btn-primary" onclick="location.href = '{% url 'route_list' %}';">
+                <button type="button" class="btn btn-primary" onclick="location.href = '{% url 'home' %}';">
                     Cancel
                 </button>
             </form>
@@ -57,6 +60,11 @@
                 var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
                 var id = 'id_' + name;
                 $(this).attr({'name': name, 'id': id}).prop('checked', false);
+            });
+            newRow.find("input:hidden").each(function () {
+                var name = $(this).attr('name').replace('-' + (rowCount - 1) + '-', '-' + rowCount + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('')
             });
             rowCount++;
             $('#id_stations-TOTAL_FORMS').val(rowCount);

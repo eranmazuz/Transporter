@@ -1,23 +1,20 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="RouteWindowModalLabel">Edit</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form method="post" action="{% url 'route_delete' route.pk %}">
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Delete Route {{object.name}}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
             {% csrf_token %}
-            <div class="modal-body">
-                <div class="alert alert-warning" role="alert">
-                    Are you sure you want to delete <strong>{{ route.name }}</strong>?
-                </div>
+            <div class="alert alert-warning" role="alert">
+                Are you sure you want to delete <strong>{{ object.name }}</strong> ?
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </div>
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-primary" onclick="location.href = '{% url 'route_list' %}';">Cancel</button>
+
         </form>
     </div>
 </div>
-
+{% endblock content %}

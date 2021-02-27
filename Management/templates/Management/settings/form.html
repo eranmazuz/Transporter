@@ -1,26 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="fieldWrapper">
-            {{field.label_tag }}
-            {{ field }}
-            <div>
-                                {{ field.errors }}
-            </div>
+{% extends "base.html" %}
+{% block content %}
 
-
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Settings</h5>
         </div>
-        {% endfor %}
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="fieldWrapper">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        <div>
+                            {{ field.errors }}
+                        </div>
 
-    {{ form.non_field_errors }}
-    <input type="submit" value="OK">
-    </form>
-</body>
-</html>
+
+                    </div>
+                {% endfor %}
+
+                {{ form.non_field_errors }}
+                <input type="submit" value="OK">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

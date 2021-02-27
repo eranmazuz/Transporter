@@ -13,7 +13,7 @@ class RouteListView(generic.ListView):
     model = Route
     template_name = 'Management/route/list.html'
     context_object_name = 'routes'
-    paginate_by = 3
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(RouteListView, self).get_context_data(**kwargs)
@@ -97,6 +97,11 @@ class RouteUpdateView(generic.UpdateView):
         context['station_formset'] = StationFormSet(instance=self.object)
         context['route_form'] = RouteModelForm(instance=self.object)
         return context
+
+class RouteDeleteView(generic.DeleteView):
+    model = Route
+    template_name = 'Management/route/delete.html'
+    success_url = reverse_lazy('route_list')
 
 
 
